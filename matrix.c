@@ -22,15 +22,15 @@ int main()
 
 	printf("Input row and col : ");
 	scanf("%d %d", &row, &col); //행과 열 입력 받기 
-    int** matrix_a = create_matrix(row, col); //matrix를 생성하여 이중포인터 matrix_a에 저장
-	int** matrix_b = create_matrix(row, col); //matrix를 생성하여 이중포인터 matrix_b에 저장
-    int** matrix_a_t = create_matrix(col, row); //matrix를 생성하여 이중포인터 matrix_a_t에 저장
+    int** matrix_a = create_matrix(row, col); //matrix를 생성하여 matrix_a에 저장
+	int** matrix_b = create_matrix(row, col); //matrix를 생성하여 matrix_b에 저장
+    int** matrix_a_t = create_matrix(col, row); //matrix를 생성하여 matrix_a_t에 저장
 
 	printf("Matrix Created.\n"); //matrix생성 완료하면 출력.
 
 	if (matrix_a == NULL || matrix_b == NULL) {return -1;} //행렬 A나 B가 NULL일 경우 return -1 (후처리검사)
 
-	do{
+	do{ //while 이 아닐 경우 반복
 		printf("----------------------------------------------------------------\n");
 		printf("                     Matrix Manipulation                        \n");
 		printf("----------------------------------------------------------------\n");
@@ -81,55 +81,55 @@ int main()
             free_matrix(matrix_a, row, col); //행렬 A에 할당된 메모리 해제
             free_matrix(matrix_b, row, col); //행렬 B에 할당된 메모리 해제
 			break;
-		default:
+		default: //case에 없는 알파벳을 입력했을 경우 
 			printf("\n       >>>>>   Concentration!!   <<<<<     \n");
 			break;
 		}
 
-	}while(command != 'q' && command != 'Q');
+	}while(command != 'q' && command != 'Q'); //q나 Q일 경우 종료
 
-	return 1;
+	return 1; //종료 후 1 반환
 }
 
 /* create a 2d array whose size is row x col using malloc() */
-int** create_matrix(int row, int col)
+int** create_matrix(int row, int col) //배열 생성 함수 (반환되는 값이 정수형 이중포인터)
 {
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //입력받은 행이나 열이 0이거나 0보다 작을 경우 
 		printf("Check the size of row and col!\n");
-		return NULL;
+		return NULL; //NULL반환
 	}
 
-	int** matrix = (int**)malloc(sizeof(int*) * row);
-	for (int r = 0; r < row; r++) {
-		matrix[r] = (int*)malloc(sizeof(int) * col);
+	int** matrix = (int**)malloc(sizeof(int*) * row); //matrix에 각 행의 포인터수 만큼 동적 메모리 할당
+	for (int r = 0; r < row; r++) { //행의 수 만큼 반복
+		matrix[r] = (int*)malloc(sizeof(int) * col); //matrix의 각 원소에 열의 포인터수만큼 동적 메모리 할당
 	}
 
 	/* Check post conditions */
-	if (matrix == NULL) {
+	if (matrix == NULL) { //matrix가 NULL값 이라면 (입력받은 행이나 열이 0이하라면)
 		printf("Memory Allocation Failed.\n");
-		return NULL;
+		return NULL; //NULL반환
 	}
 
-	return matrix;
+	return matrix; //matrix 반환
 }
 
 /* print matrix whose size is row x col */
-void print_matrix(int** matrix, int row, int col)
+void print_matrix(int** matrix, int row, int col) //이중포인터 matrix를 통해 행렬 출력
 {
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //행이나 열이 0이하일 경우
 		printf("Check the size of row and col!\n");
 		return;
 	}
-    for (int matrix_row = 0; matrix_row < row; matrix_row++) {
-		for (int matrix_col = 0; matrix_col < col; matrix_col++)
-			printf("%3d ", matrix[matrix_row][matrix_col]);
+    for (int matrix_row = 0; matrix_row < row; matrix_row++) { //row번 반복
+		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col번 반복
+			printf("%3d ", matrix[matrix_row][matrix_col]); //각 원소의 값 출력
 		printf("\n");
 	}
 	printf("\n");
 	/* Check post conditions */
-	 if (matrix == NULL) {
+	 if (matrix == NULL) { //matrix가 NULL일 경우 (행이나 열의 크기가 0이하일때)
 		printf("Memory Allocation Failed.\n");
 		return;
 	}
@@ -140,134 +140,138 @@ void print_matrix(int** matrix, int row, int col)
 
 
 /* free memory allocated by create_matrix() */
-int free_matrix(int** matrix, int row, int col)
+int free_matrix(int** matrix, int row, int col)  //할당된 메모리 해제하는 함수
 {
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) {  //행이나 열의 크기가 0이하일 경우
 		printf("Check the size of row and col!\n");
-		return -1;
+		return -1; //-1반환
 	}
 
-	for (int matrix_row = 0; matrix_row < row; matrix_row++) {
-		free(matrix[matrix_row]);
+	for (int matrix_row = 0; matrix_row < row; matrix_row++) { //row번 반복
+		free(matrix[matrix_row]); //matrix[matrix_row]에 할당한 메모리 해제
 	}
 
-	free(matrix);
-	return 1;
+	free(matrix); //matrix에 할당된 메모리 해제
+	return 1; //1 반환
 }
 
 
 /* assign random values to the given matrix */
-int fill_data(int** matrix, int row, int col)
+int fill_data(int** matrix, int row, int col) //matrix에 원소값 입력하기
 {
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //행이나 열의 크기가 0이하일 경우
 		printf("Check the size of row and col!\n");
-		return -1;
+		return -1; //-1 반환
 	}
-    for (int matrix_row = 0; matrix_row < row; matrix_row++)
-		for (int matrix_col = 0; matrix_col < col; matrix_col++)
-			matrix[matrix_row][matrix_col] = rand() % 20;
+    for (int matrix_row = 0; matrix_row < row; matrix_row++) //row번 반복
+		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col번 반복
+			matrix[matrix_row][matrix_col] = rand() % 20; //2차원 배열 matrix의 각 원소에 랜덤하게 원소값 생성하기
 	/* Check post conditions */
-    if (matrix == NULL) {
+    if (matrix == NULL) { //matrix가 NULL일 경우 (행이나 열의 크기가 0이하일때)
 		printf("Memory Allocation Failed.\n");
-		return -1;
+		return -1; //-1반환
 	}
-	return 1;
+	return 1; //-1반환
 }
 
 /* mmatrix_sum = matrix_a + matrix_b */
-int addition_matrix(int** matrix_a, int** matrix_b, int row, int col)
+int addition_matrix(int** matrix_a, int** matrix_b, int row, int col) //이중포인터 matrix_a와 matrix_b를 통해 행렬 A와 행렬 B의 합 구하기
 {
-    int** matrix_sum = create_matrix(row, col);
+    int** matrix_sum = create_matrix(row, col); //이중포인터 matrix_sum에 create_matrix를 통해 생성한 배열 대입
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //행이나 열의 크기가 0이하일때
 		printf("Check the size of row and col!\n");
 		return -1;
 	}
-	for (int matrix_row = 0; matrix_row < row; matrix_row++) {
-		for (int matrix_col = 0; matrix_col < col; matrix_col++)
-			matrix_sum[matrix_row][matrix_col] = matrix_a[matrix_row][matrix_col] + matrix_b[matrix_row][matrix_col];
+	for (int matrix_row = 0; matrix_row < row; matrix_row++) { //row 만큼 반복
+		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col만큼 반복
+			matrix_sum[matrix_row][matrix_col] = matrix_a[matrix_row][matrix_col] + matrix_b[matrix_row][matrix_col]; 
+            //배열 A의 각 원소와 배열 B의 각 원소를 더하여 matrix_sum의 각 원소에 대입
 	}
 	/* Check post conditions */
 	if (matrix_a == NULL || matrix_b == NULL || matrix_sum == NULL) {
+        //matrix_a나 matrix_b나 matrix_sum중 하나라도 NULL일 경우 (행이나 열의 크기가 0이하일때)
 		printf("Memory Allocation Failed.\n");
 		return -1;
 	}
 
-	print_matrix(matrix_sum, row, col);
-	free_matrix(matrix_sum, row, col);
-	return 1;
+	print_matrix(matrix_sum, row, col); //matrix_sum출력 (print_matrix함수 호출)
+	free_matrix(matrix_sum, row, col); //matrix_sum에 할당된 메모리 해제(free_matrix함수 호출)
+	return 1; //1반환
 }
 
 /* matrix_sub = matrix_a - matrix_b */
-int subtraction_matrix(int** matrix_a, int** matrix_b, int row, int col)
+int subtraction_matrix(int** matrix_a, int** matrix_b, int row, int col)//이중포인터 matrix_a와 matrix_b를 통해 행렬 A와 행렬 B의 합 구하기
 {
-    int** matrix_sub = create_matrix(row, col);
+    int** matrix_sub = create_matrix(row, col); //이중포인터 matrix_sub에 create_matrix를 통해 생성한 배열 대입
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) {  //행이나 열의 크기가 0이하일 경우
 		printf("Check the size of row and col!\n");
 		return -1;
 	}
-	for (int matrix_row = 0; matrix_row < row; matrix_row++) {
-		for (int matrix_col = 0; matrix_col < col; matrix_col++)
+	for (int matrix_row = 0; matrix_row < row; matrix_row++) {//row만큼 반복
+		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col만큼 반복
 			matrix_sub[matrix_row][matrix_col] = matrix_a[matrix_row][matrix_col] - matrix_b[matrix_row][matrix_col];
+            //배열 A의 각 원소와 배열 B의 각 원소를 빼서 matrix_sub의 각 원소에 대입
 	}
 	/* Check post conditions */
     if (matrix_a == NULL || matrix_b == NULL || matrix_sub == NULL) {
+        //matrix_a나 matrix_b나 matrix_sum중 하나라도 NULL일 경우 (행이나 열의 크기가 0이하일때)
 		printf("Memory Allocation Failed.\n");
-		return -1;
+		return -1; //-1 반환
 	}
-	print_matrix(matrix_sub, row, col);
-	free_matrix(matrix_sub, row, col);
+	print_matrix(matrix_sub, row, col); //matrix_sub출력(print_matrix 함수 호출)
+	free_matrix(matrix_sub, row, col); //matrix_sub에 할당된 메모리 해제(free_matrix함수 호출)
 
-	return 1;
+	return 1; //1 반환 
 }
 
 /* transpose the matrix to matrix_t */
-int transpose_matrix(int** matrix, int** matrix_t, int row, int col)
+int transpose_matrix(int** matrix, int** matrix_t, int row, int col) //이중포인터 matrix와 matrix_t를 매개변수로 하여 전치행렬 구하는 함수
 {
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //행이나 열의 크기가 0이하일 경우
 		printf("Check the size of row and col!\n");
-		return -1;
+		return -1; //-1반환
 	}
-	for (int matrix_row = 0; matrix_row < row; matrix_row++) {
-		for (int matrix_col = 0; matrix_col < col; matrix_col++)
-			matrix_t[matrix_row][matrix_col] = matrix[matrix_col][matrix_row];
+	for (int matrix_row = 0; matrix_row < row; matrix_row++) { //row번 반복
+		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col 번 반복 
+			matrix_t[matrix_row][matrix_col] = matrix[matrix_col][matrix_row]; //matrix_t의 각 원소에 matrix의 원소를 열 우선으로 대입
 	}
 	/* Check post conditions */
-    if (matrix == NULL || matrix_t ==NULL) {
+    if (matrix == NULL || matrix_t ==NULL) { //matrix나 matrix_t중 하나라도 NULL일 경우 (행이나 열의 크기가 0이하일때)
 		printf("Memory Allocation Failed.\n");
-		return -1;
+		return -1; //-1반환
 	}
 
-	return 1;
+	return 1; //1 반환
 }
 
 /* matrix_axt - matrix_a x matrix_t */
-int multiply_matrix(int** matrix_a, int** matrix_t, int row, int col)
+int multiply_matrix(int** matrix_a, int** matrix_t, int row, int col) //이중포인터 matrix_a와 matrix_t를 통해 행렬 곱 구하기
 {
-    int** matrix_axt = create_matrix(row, row);
+    int** matrix_axt = create_matrix(row, row); //이중포인터 matrix_axt에 create_matrix함수를 이용해 생성한 배열을 대입(단,행과열의 크기가 같아야 하므로 매개변수는 row,row)
 	/* Check pre conditions */
-	if (row <= 0 || col <= 0) {
+	if (row <= 0 || col <= 0) { //행이나 열의 크기가 0이하일 경우
 		printf("Check the size of row and col!\n");
-		return -1;
+		return -1; //-1 반환
 	}
-	for (int matrix_a_row = 0; matrix_a_row < row; matrix_a_row++) {
-		for (int matrix_t_row = 0; matrix_t_row < row; matrix_t_row++) {
-			int temp = 0;
-			for (int matrix_col = 0; matrix_col < col; matrix_col++)
-				temp += matrix_a[matrix_a_row][matrix_col] * matrix_t[matrix_col][matrix_t_row];
-			matrix_axt[matrix_a_row][matrix_t_row] = temp;
+	for (int matrix_a_row = 0; matrix_a_row < row; matrix_a_row++) { //row번 반복 (행만큼 반복)
+		for (int matrix_t_row = 0; matrix_t_row < row; matrix_t_row++) { //row번 (열만큼 반복)
+			int temp = 0; //곱한 값 저장할 변수
+			for (int matrix_col = 0; matrix_col < col; matrix_col++) //matrix a의 열만큼 반복
+				temp += matrix_a[matrix_a_row][matrix_col] * matrix_t[matrix_col][matrix_t_row]; //행렬 A[행][열] * 전치행렬 T[열][행] 곱한 값을 더한다.
+			matrix_axt[matrix_a_row][matrix_t_row] = temp; //matrix_axt에 temp에 저장된 값 대입
 		}
 	}
 	/* Check post conditions */
-    if (matrix_t == NULL || matrix_axt ==NULL) {
+    if (matrix_t == NULL || matrix_axt ==NULL) { //matrix_t나 matrix_axt 둘 중 하나라도 NULL일 경우
 		printf("Memory Allocation Failed.\n");
-		return -1;
+		return -1; //-1 반환
 	}
-	print_matrix(matrix_axt, row, row);
-	free_matrix(matrix_axt, row, col);
-	return 1;
+	print_matrix(matrix_axt, row, row); //matrix_axt 출력(print_matrix 함수 호출)
+	free_matrix(matrix_axt, row, col); //matrix_axt에 할당된 메모리 해제
+	return 1; //1 반환
 }
