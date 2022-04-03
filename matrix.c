@@ -229,7 +229,8 @@ int subtraction_matrix(int** matrix_a, int** matrix_b, int row, int col)//이중
 }
 
 /* transpose the matrix to matrix_t */
-int transpose_matrix(int** matrix, int** matrix_t, int row, int col) //이중포인터 matrix와 matrix_t를 매개변수로 하여 전치행렬 구하는 함수
+int transpose_matrix(int** matrix, int** matrix_t, int row, int col) 
+//이중포인터 matrix와 matrix_t를 매개변수로 하여 전치행렬 구하는 함수
 {
 	/* Check pre conditions */
 	if (row <= 0 || col <= 0) { //행이나 열의 크기가 0이하일 경우
@@ -238,7 +239,8 @@ int transpose_matrix(int** matrix, int** matrix_t, int row, int col) //이중포
 	}
 	for (int matrix_row = 0; matrix_row < row; matrix_row++) { //row번 반복
 		for (int matrix_col = 0; matrix_col < col; matrix_col++) //col 번 반복 
-			matrix_t[matrix_row][matrix_col] = matrix[matrix_col][matrix_row]; //matrix_t의 각 원소에 matrix의 원소를 열 우선으로 대입
+			matrix_t[matrix_row][matrix_col] = matrix[matrix_col][matrix_row];
+			 //matrix_t의 각 원소에 matrix의 원소를 열 우선으로 대입
 	}
 	/* Check post conditions */
     if (matrix == NULL || matrix_t ==NULL) { //matrix나 matrix_t중 하나라도 NULL일 경우 (행이나 열의 크기가 0이하일때)
@@ -262,7 +264,8 @@ int multiply_matrix(int** matrix_a, int** matrix_t, int row, int col) //이중�
 		for (int matrix_t_row = 0; matrix_t_row < row; matrix_t_row++) { //row번 (열만큼 반복)
 			int temp = 0; //곱한 값 저장할 변수
 			for (int matrix_col = 0; matrix_col < col; matrix_col++) //matrix a의 열만큼 반복
-				temp += matrix_a[matrix_a_row][matrix_col] * matrix_t[matrix_col][matrix_t_row]; //행렬 A[행][열] * 전치행렬 T[열][행] 곱한 값을 더한다.
+				temp += matrix_a[matrix_a_row][matrix_col] * matrix_t[matrix_col][matrix_t_row]; 
+				//temp에 행렬 A[matrix_a_row][matrix_col] * 전치행렬 T[matrix_col][matrix_t_row]의 원소를 곱한 값을 더한다.
 			matrix_axt[matrix_a_row][matrix_t_row] = temp; //matrix_axt에 temp에 저장된 값 대입
 		}
 	}
